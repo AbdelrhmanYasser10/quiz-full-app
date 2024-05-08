@@ -18,7 +18,7 @@ class AppCubit extends Cubit<AppState> {
   List<AnswerModel> userAnswers = [];
 
   //Counter
-  int duration = 10;
+  int duration = 60;
   CountDownController controller = CountDownController();
 
   // grade

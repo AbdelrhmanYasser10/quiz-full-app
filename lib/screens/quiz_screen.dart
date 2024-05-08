@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_quiz_full_app/cubits/app_cubit.dart';
+import 'package:new_quiz_full_app/screens/body/corss_body.dart';
 import 'package:new_quiz_full_app/screens/body/drag_body.dart';
 import 'package:new_quiz_full_app/screens/body/mcq_body.dart';
+import 'package:new_quiz_full_app/screens/body/puzzle_body.dart';
 import 'package:new_quiz_full_app/screens/body/sound_body.dart';
 import 'package:new_quiz_full_app/screens/results_screen.dart';
 
@@ -17,13 +19,13 @@ class QuizScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
-        if(state is QuizFinished){
+        if (state is QuizFinished) {
           AppCubit.get(context).calculateUserResults(); // final grades
           Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (_)=>const ResultsScreen(),
-              ),
+            context,
+            MaterialPageRoute(
+              builder: (_) => const ResultsScreen(),
+            ),
           );
         }
       },
@@ -41,8 +43,7 @@ class QuizScreen extends StatelessWidget {
                 textStyle: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black
-                ),
+                    color: Colors.black),
               ),
             ),
           ),
@@ -55,22 +56,22 @@ class QuizScreen extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 7,
                 height: MediaQuery.of(context).size.height / 7,
                 ringColor: Colors.grey[300]!,
-                fillColor:Colors.black,
+                fillColor: Colors.black,
                 backgroundColor: Colors.black,
                 strokeWidth: 10.0,
                 strokeCap: StrokeCap.round,
                 textStyle: const TextStyle(
-                    fontSize: 14.0, color: Colors.white, fontWeight: FontWeight.bold),
+                    fontSize: 14.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
                 textFormat: CountdownTextFormat.S,
                 isReverse: true,
                 isReverseAnimation: false,
                 isTimerTextShown: true,
                 autoStart: true,
-
                 onComplete: () {
                   cubit.timeOutFunction();
                 },
-
                 timeFormatterFunction: (defaultFormatterFunction, duration) {
                   return Function.apply(defaultFormatterFunction, [duration]);
                 },
@@ -84,18 +85,23 @@ class QuizScreen extends StatelessWidget {
                       return MCQBody(
                         question: quiz1[index],
                       );
-                    }
-                    else if (quiz1[index].type == "sound") {
+                    } else if (quiz1[index].type == "sound") {
                       return SoundBody(
                         question: quiz1[index],
                       );
-                    }
-                    else if (quiz1[index].type == "drag") {
+                    } else if (quiz1[index].type == "drag") {
                       return DragBody(
                         question: quiz1[index],
                       );
-                    }
-                    else {
+                    } else if (quiz1[index].type == "crossword") {
+                      return CrossBody(
+                        question: quiz1[index],
+                      );
+                    } else if (quiz1[index].type == "puzzle") {
+                      return PuzzleBody(
+                        question: quiz1[index],
+                      );
+                    } else {
                       return const SizedBox();
                     }
                   },
