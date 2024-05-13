@@ -14,7 +14,9 @@ class AppCubit extends Cubit<AppState> {
 
   static AppCubit get(context)=>BlocProvider.of(context);
 
-  PageController pageController = PageController();
+  PageController pageController = PageController(
+    initialPage: 2
+  );
   List<AnswerModel> userAnswers = [];
 
   //Counter
@@ -68,5 +70,7 @@ class AppCubit extends Cubit<AppState> {
     }
     emit(ResultsCalculated());
   }
+
+
 
 }

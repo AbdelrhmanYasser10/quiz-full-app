@@ -68,7 +68,7 @@ class QuizScreen extends StatelessWidget {
                 isReverse: true,
                 isReverseAnimation: false,
                 isTimerTextShown: true,
-                autoStart: true,
+                autoStart: false,
                 onComplete: () {
                   cubit.timeOutFunction();
                 },

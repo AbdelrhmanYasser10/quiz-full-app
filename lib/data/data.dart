@@ -30,12 +30,11 @@ List<QuestionModel> quiz1 = [
     title: "Solve the following puzzle",
     type: "puzzle",
     answers: [
-      "assets/animal images/1.jpeg",
-      "assets/animal images/2.jpeg",
-      "assets/animal images/3.jpeg",
-      "assets/animal images/4.jpeg",
-      "assets/animal images/5.jpeg",
-      "assets/animal images/6.jpeg",
+      "assets/animal images/1.png",
+      "assets/animal images/2.png",
+      "assets/animal images/3.png",
+      "assets/animal images/4.png",
+
 
     ],
     dragChecker: {
@@ -43,8 +42,7 @@ List<QuestionModel> quiz1 = [
       "2":false,
       "3":false,
       "4":false,
-      "5":false,
-      "6":false,
+
     }
   ),
   QuestionModel(

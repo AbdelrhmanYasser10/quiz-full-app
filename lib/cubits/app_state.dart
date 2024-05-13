@@ -9,3 +9,5 @@ class AddNewAnswer extends AppState{}
 class TimeOutState extends AppState{}
 class QuizFinished extends AppState{}
 class ResultsCalculated extends AppState{}
+
+
