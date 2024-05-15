@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_quiz_full_app/cubits/app_cubit.dart';
+import 'package:new_quiz_full_app/cubits/questions_cubit/questions_cubit.dart';
 import 'package:new_quiz_full_app/models/answer_model.dart';
 import 'package:new_quiz_full_app/models/question_model.dart';
 
@@ -72,6 +73,7 @@ class _CrossBodyState extends State<CrossBody> {
                                 questionId: widget.question.id,
                                 passedByUser: words[0] == widget.question.answers[0],
                             ),
+                          questions: QuestionsCubit.get(context).questions,
                         );
                       }
                     },

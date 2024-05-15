@@ -1,5 +1,5 @@
 class AnswerModel {
-  late int questionId;
+  late String questionId;
   late bool passedByUser;
 
   int? userChoiceIndex; // mcq , sound

@@ -5,6 +5,7 @@ import 'package:new_quiz_full_app/models/answer_model.dart';
 import 'package:new_quiz_full_app/models/question_model.dart';
 
 import '../../cubits/app_cubit.dart';
+import '../../cubits/questions_cubit/questions_cubit.dart';
 
 class SoundBody extends StatefulWidget {
   final QuestionModel question;
@@ -75,6 +76,7 @@ class _SoundBodyState extends State<SoundBody> {
                                   passedByUser: true,
                                   userChoiceIndex: index,
                                 ),
+                                questions: QuestionsCubit.get(context).questions,
                               );
                             });
                           },
@@ -83,7 +85,7 @@ class _SoundBodyState extends State<SoundBody> {
                               color: activeIndex == index ? Colors.black : Colors.blueGrey.shade300,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Image.asset(widget.question.answers[index]),
+                            child: Image.network(widget.question.answers[index]),
                           ),
                         );
                       },

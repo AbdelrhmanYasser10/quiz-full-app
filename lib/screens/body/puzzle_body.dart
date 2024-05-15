@@ -7,6 +7,8 @@ import 'package:new_quiz_full_app/cubits/app_cubit.dart';
 import 'package:new_quiz_full_app/models/answer_model.dart';
 import 'package:new_quiz_full_app/models/question_model.dart';
 
+import '../../cubits/questions_cubit/questions_cubit.dart';
+
 class PuzzleBody extends StatefulWidget {
   final QuestionModel question;
   const PuzzleBody({super.key, required this.question});
@@ -72,7 +74,7 @@ class _PuzzleBodyState extends State<PuzzleBody> {
                                       builder: (context, candidateData, rejectedData) {
                                         return Opacity(
                                           opacity: isDragged? 1 : 0.5,
-                                          child: Image.asset(
+                                          child: Image.network(
                                             widget.question.answers[index],
                                             fit: BoxFit.fill,
                                           ),
@@ -104,6 +106,7 @@ class _PuzzleBodyState extends State<PuzzleBody> {
                                               questionId: widget.question.id,
                                               passedByUser: true,
                                             ),
+                                            questions: QuestionsCubit.get(context).questions,
                                           );
                                         }
                                         setState(() {});
@@ -148,20 +151,20 @@ class _PuzzleBodyState extends State<PuzzleBody> {
                           bool isDraggedSuccessfully = widget.question.dragChecker![data]!;
                           return Draggable<String>(
                             data: data,
-                            childWhenDragging:Image.asset(
+                            childWhenDragging:Image.network(
                               widget.question.answers[index],
                               color: Colors.grey,
                               width: 100,
                               height: 100,
                               fit: BoxFit.cover,
                             ),
-                            feedback: Image.asset(
+                            feedback: Image.network(
                               widget.question.answers[index],
                               width: 100,
                               height: 100,
                               fit: BoxFit.cover,
                             ),
-                            child: isDraggedSuccessfully ? const SizedBox() : Image.asset(
+                            child: isDraggedSuccessfully ? const SizedBox() : Image.network(
                               widget.question.answers[index],
                               width: 100,
                               height: 100,

@@ -1,3 +1,4 @@
+/*
 import '../models/question_model.dart';
 
 List<QuestionModel> quiz1 = [
@@ -34,7 +35,6 @@ List<QuestionModel> quiz1 = [
       "assets/animal images/2.png",
       "assets/animal images/3.png",
       "assets/animal images/4.png",
-
 
     ],
     dragChecker: {
@@ -118,4 +118,4 @@ List<QuestionModel> quiz1 = [
     correctAnswerIndex: 0,
   ),
 
-];
+];*/

@@ -5,6 +5,8 @@ import 'package:new_quiz_full_app/cubits/app_cubit.dart';
 import 'package:new_quiz_full_app/models/answer_model.dart';
 import 'package:new_quiz_full_app/models/question_model.dart';
 
+import '../../cubits/questions_cubit/questions_cubit.dart';
+
 class MCQBody extends StatefulWidget {
   final QuestionModel question;
 
@@ -58,6 +60,7 @@ class _MCQBodyState extends State<MCQBody> {
                                   passedByUser: true,
                                   userChoiceIndex: index,
                                 ),
+                                questions: QuestionsCubit.get(context).questions,
                               );
                             });
                           },

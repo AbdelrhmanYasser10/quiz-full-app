@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_quiz_full_app/cubits/auth_cubit/auth_cubit.dart';
+import 'package:new_quiz_full_app/screens/intro_screen.dart';
 import 'package:new_quiz_full_app/utlis/my_text_form_field.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -40,6 +41,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               content: Text(state.message),
               backgroundColor: Colors.red,
             ),
+          );
+        }
+        if(state is RegisterSuccessfully){
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_){
+                return IntroScreen();
+              },
+              ),
           );
         }
       },
@@ -122,10 +132,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               icon: Icons.email_outlined,
                               enabled: false,
                               validator: (value) {
-                                if (value!.isEmpty) {
+                                /*if (value!.isEmpty) {
                                   return "Name must not be empty";
                                 }
-                                return null;
+                                return null;*/
                               },
                             ),
                             verticalSpace(heightSpace: 20.0),
@@ -136,10 +146,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               enabled: false,
                               isPassword: true,
                               validator: (value) {
-                                if (value!.isEmpty) {
+                                /*if (value!.isEmpty) {
                                   return "Name must not be empty";
                                 }
-                                return null;
+                                return null;*/
                               },
                             ),
                             verticalSpace(heightSpace: 20.0),
@@ -150,13 +160,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               enabled: false,
                               isPassword: true,
                               validator: (value) {
-                                if (value!.isEmpty) {
+                                /*if (value!.isEmpty) {
                                   return "Name must not be empty";
                                 }
                                 if (value != _passwordController.text) {
                                   return "Password confirmation doesn't match the password";
                                 }
-                                return null;
+                                return null;*/
                               },
                             ),
                           ],

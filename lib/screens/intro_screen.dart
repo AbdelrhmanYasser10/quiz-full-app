@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:new_quiz_full_app/screens/quiz_screen.dart';
+import 'package:new_quiz_full_app/cubits/quizzes_cubit/quizzes_cubit.dart';
+import 'package:new_quiz_full_app/screens/all_quizes_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -57,10 +58,11 @@ class _IntroScreenState extends State<IntroScreen> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
+                        QuizzesCubit.get(context).getAllQuizzes();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const QuizScreen(),
+                            builder: (_) => const AllQuizzesScreen(),
                           ),
                         );
                       },

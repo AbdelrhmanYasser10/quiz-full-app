@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:new_quiz_full_app/cubits/app_cubit.dart';
 import 'package:new_quiz_full_app/cubits/auth_cubit/auth_cubit.dart';
+import 'package:new_quiz_full_app/cubits/questions_cubit/questions_cubit.dart';
+import 'package:new_quiz_full_app/cubits/quizzes_cubit/quizzes_cubit.dart';
+import 'package:new_quiz_full_app/screens/intro_screen.dart';
 import 'package:new_quiz_full_app/screens/register_screen.dart';
 
 import 'firebase_options.dart';
@@ -29,7 +33,13 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
         create: (context) => AuthCubit(),
-        )
+        ),
+        BlocProvider(
+          create: (context) => QuestionsCubit(),
+        ),
+        BlocProvider(
+          create: (context) => QuizzesCubit(),
+        ),
       ],
       child: MaterialApp(
         locale: const Locale('en'),
@@ -44,7 +54,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: false,
         ),
-        home: const RegisterScreen(),
+        home: FirebaseAuth.instance.currentUser !=null ?IntroScreen():const RegisterScreen(),
       ),
     );
   }

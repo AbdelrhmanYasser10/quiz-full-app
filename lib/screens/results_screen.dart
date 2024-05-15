@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_quiz_full_app/cubits/app_cubit.dart';
-import 'package:new_quiz_full_app/data/data.dart';
+import 'package:new_quiz_full_app/cubits/questions_cubit/questions_cubit.dart';
 
 import '../generated/l10n.dart';
 
@@ -34,7 +34,7 @@ class ResultsScreen extends StatelessWidget {
           ),
           body: Center(
             child: Text(
-              "${cubit.grade}/${quiz1.length * 10}",
+              "${cubit.grade}/${QuestionsCubit.get(context).questions.length * 10}",
               style: GoogleFonts.manrope(
                 textStyle:const TextStyle(
                   fontSize: 40.0,
