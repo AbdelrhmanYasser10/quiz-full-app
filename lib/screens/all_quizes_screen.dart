@@ -52,7 +52,9 @@ class AllQuizzesScreen extends StatelessWidget {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (_){
-                              return const QuizScreen();
+                              return  QuizScreen(
+                                quizId: cubit.allQuizzes[index].id,
+                              );
                             }),
                         );
                       },

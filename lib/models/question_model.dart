@@ -50,11 +50,24 @@ class QuestionModel{
        });
        crossWordQuestion!.add(fullData);
       });
-
-
-
     }
+  }
 
+  Map<String,dynamic> toMap(){
+    Map<String,String> crossWordMap= {};
+    if(crossWordQuestion != null) {
+      for (int i = 0 ; i < crossWordQuestion!.length;i++) {
+        crossWordMap['row${i+1}'] = jsonEncode(crossWordQuestion![i]);
+      }
+    }
+    return {
+      'title':title,
+      'type':type,
+      'answers':answers,
+      'dragChecker':dragChecker,
+      'correctAnswerIndex':correctAnswerIndex,
+      'crossWordQuestion': crossWordMap.isEmpty ? null : crossWordMap,
+    };
   }
 
 }

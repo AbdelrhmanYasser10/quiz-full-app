@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -17,10 +18,11 @@ class AppCubit extends Cubit<AppState> {
   PageController pageController = PageController();
   List<AnswerModel> userAnswers = [];
 
+  var _database = FirebaseFirestore.instance;
 
 
   //Counter
-  int duration = 60;
+  int duration = 10;
   CountDownController controller = CountDownController();
 
   // grade
@@ -49,27 +51,92 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
-  void calculateUserResults({required List<QuestionModel> questions}){
-    for(var element in userAnswers){
-     if(element.userChoiceIndex != null){
-       //mcq or sound
-       // --> check on correct answer
-       for(var rootQuestions in questions){
-         if(element.questionId == rootQuestions.id){
-           if(element.userChoiceIndex == rootQuestions.correctAnswerIndex){
-             grade+=10;
-             break;
-           }
-         }
-       }
-     }
-     else{
-       if(element.passedByUser){
-         grade +=10;
-       }
-     }
+  void calculateUserResults({
+    required List<QuestionModel> questions,
+    required String quizId,
+    required String userId,
+  }){
+    print(questions.length);
+    print(userAnswers.length);
+    Map<String, bool> checkUserSolution = {};
+    for(var element in questions){
+      checkUserSolution[element.id] = false;
     }
-    emit(ResultsCalculated());
+    for(var element in userAnswers){
+      checkUserSolution[element.questionId] = true;
+    }
+    //grade only
+    for(var element in questions){
+      for (var userAnswer in userAnswers){
+        if(element.id == userAnswer.questionId){
+          // sound or mcq
+          if(userAnswer.userChoiceIndex != null){
+            if(userAnswer.userChoiceIndex! == element.correctAnswerIndex){
+              grade +=10;
+            }
+          }
+          else if(userAnswer.passedByUser){
+            grade += 10;
+          }
+        }
+      }
+    }
+
+    for(var element in checkUserSolution.keys){
+      Map<String,dynamic> questionMap = {};
+      //true
+      if(checkUserSolution[element]!){
+        for(var question in questions){
+          if(question.id == element){
+            questionMap = question.toMap();
+            for(var userAnswer  in userAnswers){
+              if(element == userAnswer.questionId){
+                //mcq , sound
+                if(userAnswer.userChoiceIndex != null){
+                  questionMap['userChoice'] = userAnswer.userChoiceIndex!;
+                }
+                // pass
+                else
+                {
+                  questionMap['pass'] = userAnswer.passedByUser;
+                }
+                break;
+              }
+            }
+            break;
+          }
+        }
+
+      }
+      else {
+        for (var question in questions) {
+          if (question.id == element) {
+            questionMap = question.toMap();
+            questionMap['pass'] = false;
+          }
+        }
+      }
+      _database.
+      collection('users')
+          .doc(userId)
+          .collection('results')
+          .doc(quizId)
+          .collection("questions")
+          .doc(element).
+      set(questionMap).then((value){
+        print("Added successfully");
+      });
+    }
+    _database.
+    collection("users")
+    .doc(userId)
+    .collection("results")
+    .doc(quizId).set({
+      'grade':grade,
+    }).then((value) {
+      emit(ResultsCalculated());
+    });
+
   }
 
 

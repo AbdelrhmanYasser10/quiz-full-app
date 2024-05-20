@@ -11,7 +11,7 @@ import 'body/puzzle_body.dart';
 import 'body/sound_body.dart';
 
 class QuizBodyConsumer extends StatelessWidget {
-  const QuizBodyConsumer({Key? key}) : super(key: key);
+  const QuizBodyConsumer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,6 @@ class QuizBodyConsumer extends StatelessWidget {
                   controller: cubit.pageController,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    print(questionCubit.questions.length);
                     if (questionCubit.questions[index].type == "mcq") {
                       return MCQBody(
                         question: questionCubit.questions[index],

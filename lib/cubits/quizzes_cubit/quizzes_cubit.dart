@@ -14,6 +14,7 @@ class QuizzesCubit extends Cubit<QuizzesState> {
   List<QuizModel> allQuizzes = [];
   final _database = FirebaseFirestore.instance;
   void getAllQuizzes(){
+    allQuizzes = [];
     emit(GetAllQuizzesLoading());
     _database.collection(
       'quizes'
