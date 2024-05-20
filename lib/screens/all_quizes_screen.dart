@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,80 +21,137 @@ class AllQuizzesScreen extends StatelessWidget {
             textStyle: const TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.black
-            ),
+                color: Colors.black),
           ),
         ),
         centerTitle: true,
         elevation: 0.0,
       ),
       body: BlocConsumer<QuizzesCubit, QuizzesState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is GetSolvedQuizzesError) {
+            QuestionsCubit.get(context).getQuestionsData(
+              quizId: state.quizId,
+            );
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) {
+                return QuizScreen(
+                  quizId: state.quizId,
+                );
+              }),
+            );
+          } else if(state is GetSolvedQuizzesSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Solved Before"),
+              backgroundColor: Colors.red,
+            ));
+          }
+        },
         builder: (context, state) {
-          var cubit=  QuizzesCubit.get(context);
-          if(state is GetAllQuizzesLoading){
+          var cubit = QuizzesCubit.get(context);
+          if (state is GetAllQuizzesLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          }
-          else if(state is GetAllQuizzesSuccess) {
+          } else if (state is GetAllQuizzesSuccess) {
             return Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 5.0,
+                horizontal: 20.0,
+                vertical: 5.0,
               ),
               child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: (){
-                        QuestionsCubit.get(context).getQuestionsData(
-                          quizId: cubit.allQuizzes[index].id,
-                        );
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (_){
-                              return  QuizScreen(
-                                quizId: cubit.allQuizzes[index].id,
-                              );
-                            }),
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                             horizontal: 10,
-                            vertical: 20.0
-                          ),
-                          child: Center(
-                            child: Text(
-                              cubit.allQuizzes[index].name,
-                              style: GoogleFonts.manrope(
-                                textStyle: const TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
-                                ),
-                              ),
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+
+                      // to check if answered before
+                      cubit.checkUserSolvedThisQuizBefore(
+                        quizId: cubit.allQuizzes[index].id,
+                        userId: FirebaseAuth.instance.currentUser!.uid,
+                      );
+
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 20.0),
+                        child: Center(
+                          child: Text(
+                            cubit.allQuizzes[index].name,
+                            style: GoogleFonts.manrope(
+                              textStyle: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                           ),
                         ),
                       ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return SizedBox(
-                      height: 20.0,
-                    );
-                  },
-                  itemCount: cubit.allQuizzes.length,
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return SizedBox(
+                    height: 20.0,
+                  );
+                },
+                itemCount: cubit.allQuizzes.length,
               ),
             );
-          }else{
-            return const SizedBox();
+          } else {
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 5.0,
+              ),
+              child: ListView.separated(
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+
+                      // to check if answered before
+                      cubit.checkUserSolvedThisQuizBefore(
+                        quizId: cubit.allQuizzes[index].id,
+                        userId: FirebaseAuth.instance.currentUser!.uid,
+                      );
+
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 20.0),
+                        child: Center(
+                          child: Text(
+                            cubit.allQuizzes[index].name,
+                            style: GoogleFonts.manrope(
+                              textStyle: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return SizedBox(
+                    height: 20.0,
+                  );
+                },
+                itemCount: cubit.allQuizzes.length,
+              ),
+            );
           }
         },
       ),

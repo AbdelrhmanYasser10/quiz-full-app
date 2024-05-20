@@ -113,6 +113,7 @@ class AppCubit extends Cubit<AppState> {
           if (question.id == element) {
             questionMap = question.toMap();
             questionMap['pass'] = false;
+            break;
           }
         }
       }

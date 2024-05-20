@@ -10,24 +10,41 @@ part 'quizzes_state.dart';
 class QuizzesCubit extends Cubit<QuizzesState> {
   QuizzesCubit() : super(QuizzesInitial());
 
-  static QuizzesCubit get(context)=>BlocProvider.of(context);
+  static QuizzesCubit get(context) => BlocProvider.of(context);
   List<QuizModel> allQuizzes = [];
+  Map<String, bool> solvedQuizzes = {};
   final _database = FirebaseFirestore.instance;
-  void getAllQuizzes(){
+  void getAllQuizzes() {
     allQuizzes = [];
     emit(GetAllQuizzesLoading());
-    _database.collection(
-      'quizes'
-    ).get().then((value) {
-      for(var element in value.docs){
+    _database.collection('quizes').get().then((value) {
+      for (var element in value.docs) {
         var quiz = QuizModel.fromMap(element.data());
         quiz.id = element.id;
         allQuizzes.add(quiz);
       }
       emit(GetAllQuizzesSuccess());
-    }).catchError((error){
+    }).catchError((error) {
       print(error.toString());
       emit(GetAllQuizzesError());
     });
+  }
+
+  void checkUserSolvedThisQuizBefore(
+      {required String quizId, required String userId})  async{
+    emit(GetSolvedQuizzesLoading());
+    Map<String, dynamic> data = (await _database
+            .collection("users")
+            .doc(userId)
+            .collection("results")
+            .doc(quizId)
+            .get())
+        .data()!;
+    if(data['grade'] != null){
+      emit(GetSolvedQuizzesSuccess());
+    }
+    else{
+      emit(GetSolvedQuizzesError(quizId: quizId));
+    }
   }
 }
