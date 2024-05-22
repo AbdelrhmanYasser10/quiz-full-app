@@ -7,6 +7,7 @@ import 'package:new_quiz_full_app/cubits/app_cubit.dart';
 import 'package:new_quiz_full_app/cubits/auth_cubit/auth_cubit.dart';
 import 'package:new_quiz_full_app/cubits/questions_cubit/questions_cubit.dart';
 import 'package:new_quiz_full_app/cubits/quizzes_cubit/quizzes_cubit.dart';
+import 'package:new_quiz_full_app/cubits/results_cubit/results_cubit.dart';
 import 'package:new_quiz_full_app/screens/intro_screen.dart';
 import 'package:new_quiz_full_app/screens/register_screen.dart';
 
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => QuizzesCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ResultsCubit(),
         ),
       ],
       child: MaterialApp(

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_quiz_full_app/cubits/app_cubit.dart';
 import 'package:new_quiz_full_app/cubits/questions_cubit/questions_cubit.dart';
+import 'package:new_quiz_full_app/screens/body/mcq_color_body.dart';
 
 import 'body/corss_body.dart';
 import 'body/drag_body.dart';
 import 'body/mcq_body.dart';
+import 'body/mcq_differnce_body.dart';
 import 'body/puzzle_body.dart';
 import 'body/sound_body.dart';
 
@@ -16,31 +18,23 @@ class QuizBodyConsumer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<QuestionsCubit, QuestionsState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
         var questionCubit = QuestionsCubit.get(context);
-        if(state is GetDataLoading){
+        if (state is GetDataLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        }
-        else if(state is GetDataSuccessfully) {
+        } else if (state is GetDataSuccessfully) {
           return Column(
             children: [
               CircularCountDownTimer(
                 duration: cubit.duration,
                 initialDuration: 0,
                 controller: cubit.controller,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 7,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height / 7,
+                width: MediaQuery.of(context).size.width / 7,
+                height: MediaQuery.of(context).size.height / 7,
                 ringColor: Colors.grey[300]!,
                 fillColor: Colors.black,
                 backgroundColor: Colors.black,
@@ -60,10 +54,8 @@ class QuizBodyConsumer extends StatelessWidget {
                     questions: questionCubit.questions,
                   );
                 },
-                timeFormatterFunction:
-                    (defaultFormatterFunction, duration) {
-                  return Function.apply(
-                      defaultFormatterFunction, [duration]);
+                timeFormatterFunction: (defaultFormatterFunction, duration) {
+                  return Function.apply(defaultFormatterFunction, [duration]);
                 },
               ),
               Expanded(
@@ -83,14 +75,23 @@ class QuizBodyConsumer extends StatelessWidget {
                       return DragBody(
                         question: questionCubit.questions[index],
                       );
-                    } else
-                    if (questionCubit.questions[index].type == "crossword") {
+                    } else if (questionCubit.questions[index].type ==
+                        "crossword") {
                       return CrossBody(
                         question: questionCubit.questions[index],
                       );
-                    } else
-                    if (questionCubit.questions[index].type == "puzzle") {
+                    } else if (questionCubit.questions[index].type ==
+                        "puzzle") {
                       return PuzzleBody(
+                        question: questionCubit.questions[index],
+                      );
+                    } else if (questionCubit.questions[index].type ==
+                        "mcq_color") {
+                      return MCQColorBody(
+                        question: questionCubit.questions[index],
+                      );
+                    } else if(questionCubit.questions[index].type=="mcq_difference"){
+                      return MCQDifferenceBody(
                         question: questionCubit.questions[index],
                       );
                     } else {
@@ -102,8 +103,7 @@ class QuizBodyConsumer extends StatelessWidget {
               ),
             ],
           );
-        }
-        else{
+        } else {
           return const SizedBox();
         }
       },

@@ -134,6 +134,8 @@ class AppCubit extends Cubit<AppState> {
     .collection("results")
     .doc(quizId).set({
       'grade':grade,
+      // todo:: the problem message,
+      'problem': grade < 50 ? "":null,
     }).then((value) {
       emit(ResultsCalculated());
     });

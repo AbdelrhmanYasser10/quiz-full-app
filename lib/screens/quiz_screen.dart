@@ -49,7 +49,7 @@ class QuizScreen extends StatelessWidget {
               ),
             ),
           ),
-          body: QuizBodyConsumer(),
+          body: const QuizBodyConsumer(),
         );
       },
     );

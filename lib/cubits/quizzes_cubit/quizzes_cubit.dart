@@ -33,15 +33,17 @@ class QuizzesCubit extends Cubit<QuizzesState> {
   void checkUserSolvedThisQuizBefore(
       {required String quizId, required String userId})  async{
     emit(GetSolvedQuizzesLoading());
-    Map<String, dynamic> data = (await _database
+    Map<String, dynamic>? data = (await _database
             .collection("users")
             .doc(userId)
             .collection("results")
             .doc(quizId)
             .get())
-        .data()!;
-    if(data['grade'] != null){
-      emit(GetSolvedQuizzesSuccess());
+        .data();
+    if(data != null){
+      emit(GetSolvedQuizzesSuccess(
+        quizId: quizId
+      ));
     }
     else{
       emit(GetSolvedQuizzesError(quizId: quizId));

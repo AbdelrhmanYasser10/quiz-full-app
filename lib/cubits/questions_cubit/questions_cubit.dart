@@ -16,6 +16,7 @@ class QuestionsCubit extends Cubit<QuestionsState> {
 
   void getQuestionsData({required String quizId}) {
     emit(GetDataLoading());
+    questions = [];
     _database.
     collection('quizes')
         .doc(

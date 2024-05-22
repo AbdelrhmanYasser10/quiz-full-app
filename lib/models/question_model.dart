@@ -30,6 +30,9 @@ class QuestionModel{
       answers.add(element);
     });
     type = json['type'];
+    if(type == "drag"){
+      answers.shuffle();
+    }
     if(json['dragChecker'] !=null) {
       dragChecker = {};
       json['dragChecker'].keys.forEach((element) {

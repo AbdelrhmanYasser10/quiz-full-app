@@ -62,7 +62,9 @@ class _IntroScreenState extends State<IntroScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const AllQuizzesScreen(),
+                            builder: (_) =>  AllQuizzesScreen(
+                              isPlay: index == 0,
+                            ),
                           ),
                         );
                       },

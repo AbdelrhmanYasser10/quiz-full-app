@@ -11,6 +11,8 @@ class GetAllQuizzesError extends QuizzesState{}
 
 class GetSolvedQuizzesLoading extends QuizzesState{}
 class GetSolvedQuizzesSuccess extends QuizzesState{
+final String quizId;
+GetSolvedQuizzesSuccess({required this.quizId});
 }
 class GetSolvedQuizzesError extends QuizzesState{
 final String quizId;

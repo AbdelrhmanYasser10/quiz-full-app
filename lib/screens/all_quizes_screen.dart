@@ -4,10 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_quiz_full_app/cubits/questions_cubit/questions_cubit.dart';
 import 'package:new_quiz_full_app/cubits/quizzes_cubit/quizzes_cubit.dart';
+import 'package:new_quiz_full_app/cubits/results_cubit/results_cubit.dart';
 import 'package:new_quiz_full_app/screens/quiz_screen.dart';
+import 'package:new_quiz_full_app/screens/solved_results_screen.dart';
 
 class AllQuizzesScreen extends StatelessWidget {
-  const AllQuizzesScreen({super.key});
+  final bool isPlay;
+  const AllQuizzesScreen({super.key,required this.isPlay});
 
   @override
   Widget build(BuildContext context) {
@@ -30,22 +33,45 @@ class AllQuizzesScreen extends StatelessWidget {
       body: BlocConsumer<QuizzesCubit, QuizzesState>(
         listener: (context, state) {
           if (state is GetSolvedQuizzesError) {
-            QuestionsCubit.get(context).getQuestionsData(
-              quizId: state.quizId,
-            );
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) {
-                return QuizScreen(
-                  quizId: state.quizId,
-                );
-              }),
-            );
+
+            if(isPlay) {
+              QuestionsCubit.get(context).getQuestionsData(
+                quizId: state.quizId,
+              );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) {
+                  return QuizScreen(
+                    quizId: state.quizId,
+                  );
+                }),
+              );
+            }
+            else{
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Not Solved Before"),
+                backgroundColor: Colors.red,
+              ));
+            }
           } else if(state is GetSolvedQuizzesSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("Solved Before"),
-              backgroundColor: Colors.red,
-            ));
+            if(isPlay) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Solved Before"),
+                backgroundColor: Colors.red,
+              ));
+            }
+            else{
+              ResultsCubit.get(context).getUserResultsForSpecificQuiz(
+                  quizId: state.quizId,
+                  userId: FirebaseAuth.instance.currentUser!.uid,
+              );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) {
+                  return const SolvedResultsScreen();
+                }),
+              );
+            }
           }
         },
         builder: (context, state) {
