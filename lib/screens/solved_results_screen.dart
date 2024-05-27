@@ -12,7 +12,7 @@ import 'body/puzzle_body.dart';
 import 'body/sound_body.dart';
 
 class SolvedResultsScreen extends StatelessWidget {
-  const SolvedResultsScreen({Key? key}) : super(key: key);
+  const SolvedResultsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
