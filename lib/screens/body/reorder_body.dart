@@ -96,7 +96,7 @@ class _ReorderBodyState extends State<ReorderBody> {
                   itemCount: widget.question.correctReorderedList!.length,
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                   ),
                   itemBuilder: (context, index) {
