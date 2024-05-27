@@ -15,14 +15,16 @@ class AppCubit extends Cubit<AppState> {
 
   static AppCubit get(context)=>BlocProvider.of(context);
 
-  PageController pageController = PageController();
+  PageController pageController = PageController(
+    initialPage: 1
+  );
   List<AnswerModel> userAnswers = [];
 
   var _database = FirebaseFirestore.instance;
 
 
   //Counter
-  int duration = 10;
+  int duration = 60;
   CountDownController controller = CountDownController();
 
   // grade

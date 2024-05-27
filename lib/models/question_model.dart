@@ -12,7 +12,9 @@ class QuestionModel{
   int? correctAnswerIndex;
   List<List<String>>? crossWordQuestion;
   List<String>? patternImages;
+  List<String>? correctReorderedList;
   String? correctPatternKey;
+  int? crossAxisCount;
 
   QuestionModel({
   required this.id,
@@ -34,7 +36,7 @@ class QuestionModel{
       answers.add(element);
     });
     type = json['type'];
-    if(type == "drag"){
+    if(type == "drag" || type =="memory" || type =="rearrange"){
       answers.shuffle();
     }
     if(json['dragChecker'] !=null) {
@@ -65,6 +67,16 @@ class QuestionModel{
       }
     }
     correctPatternKey = json['patternCorrectKey'];
+
+    crossAxisCount = json['crossAxisCount'];
+
+    if(json['correctReorderedList'] !=null) {
+      correctReorderedList = [];
+      for (var element in json['correctReorderedList']) {
+        correctReorderedList!.add(element);
+      }
+    }
+
   }
 
   Map<String,dynamic> toMap(){
@@ -83,6 +95,8 @@ class QuestionModel{
       'crossWordQuestion': crossWordMap.isEmpty ? null : crossWordMap,
       'patternImages':patternImages,
       'patternCorrectKey':correctPatternKey,
+      'crossAxisCount':crossAxisCount,
+      'correctReorderedList':correctReorderedList,
     };
   }
 

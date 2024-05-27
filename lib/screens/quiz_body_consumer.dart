@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_quiz_full_app/cubits/app_cubit.dart';
 import 'package:new_quiz_full_app/cubits/questions_cubit/questions_cubit.dart';
 import 'package:new_quiz_full_app/screens/body/mcq_color_body.dart';
+import 'package:new_quiz_full_app/screens/body/memory_body.dart';
 import 'package:new_quiz_full_app/screens/body/pattern_body.dart';
 
 import 'body/corss_body.dart';
@@ -11,6 +12,7 @@ import 'body/drag_body.dart';
 import 'body/mcq_body.dart';
 import 'body/mcq_differnce_body.dart';
 import 'body/puzzle_body.dart';
+import 'body/reorder_body.dart';
 import 'body/sound_body.dart';
 
 class QuizBodyConsumer extends StatelessWidget {
@@ -49,7 +51,7 @@ class QuizBodyConsumer extends StatelessWidget {
                 isReverse: true,
                 isReverseAnimation: false,
                 isTimerTextShown: true,
-                autoStart: true,
+                autoStart: false,
                 onComplete: () {
                   cubit.timeOutFunction(
                     questions: questionCubit.questions,
@@ -100,6 +102,17 @@ class QuizBodyConsumer extends StatelessWidget {
                         "pattern") {
                       return PatternBody(
                         question: questionCubit.questions[index],
+                      );
+                    } else if(questionCubit.questions[index].type ==
+                        "memory"){
+                      return MemoryQuizBody(
+                        question: questionCubit.questions[index],
+                      );
+                    }else if(questionCubit.questions[index].type ==
+                        "rearrange"){
+                      return ReorderBody(
+                        question: questionCubit.questions[index],
+
                       );
                     } else {
                       return const SizedBox();
