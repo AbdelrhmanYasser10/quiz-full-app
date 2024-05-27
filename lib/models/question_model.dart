@@ -11,6 +11,8 @@ class QuestionModel{
   Map<String,bool>? dragChecker;
   int? correctAnswerIndex;
   List<List<String>>? crossWordQuestion;
+  List<String>? patternImages;
+  String? correctPatternKey;
 
   QuestionModel({
   required this.id,
@@ -20,6 +22,8 @@ class QuestionModel{
   this.crossWordQuestion,
   this.dragChecker,
   this.correctAnswerIndex,
+  this.correctPatternKey,
+  this.patternImages,
   });
 
   QuestionModel.fromMap(Map<String,dynamic> json){
@@ -54,6 +58,8 @@ class QuestionModel{
        crossWordQuestion!.add(fullData);
       });
     }
+    patternImages = json['patternImages'];
+    correctPatternKey = json['patternCorrectKey'];
   }
 
   Map<String,dynamic> toMap(){
@@ -70,6 +76,8 @@ class QuestionModel{
       'dragChecker':dragChecker,
       'correctAnswerIndex':correctAnswerIndex,
       'crossWordQuestion': crossWordMap.isEmpty ? null : crossWordMap,
+      'patternImages':patternImages,
+      'patternCorrectKey':correctPatternKey,
     };
   }
 
