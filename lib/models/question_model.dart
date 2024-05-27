@@ -58,7 +58,12 @@ class QuestionModel{
        crossWordQuestion!.add(fullData);
       });
     }
-    patternImages = json['patternImages'];
+    if(json['patternImages'] !=null) {
+      patternImages = [];
+      for (var element in json['patternImages']) {
+        patternImages!.add(element);
+      }
+    }
     correctPatternKey = json['patternCorrectKey'];
   }
 
