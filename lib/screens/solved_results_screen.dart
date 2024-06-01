@@ -107,10 +107,14 @@ class SolvedResultsScreen extends StatelessWidget {
                                     "mcq_color") {
                                   return MCQColorBody(
                                     question: cubit.questionsAnswer[index].question,
+                                    fromResult: true,
+                                    results: cubit.questionsAnswer[index],
                                   );
                                 } else if(cubit.questionsAnswer[index].question.type=="mcq_difference"){
                                   return MCQDifferenceBody(
                                     question: cubit.questionsAnswer[index].question,
+                                    fromResult: true,
+                                    results: cubit.questionsAnswer[index],
                                   );
                                 } else {
                                   return const SizedBox();

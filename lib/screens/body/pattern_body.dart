@@ -6,11 +6,14 @@ import 'package:new_quiz_full_app/models/question_model.dart';
 
 import '../../cubits/questions_cubit/questions_cubit.dart';
 import '../../models/answer_model.dart';
+import '../../models/results_model.dart';
 
 class PatternBody extends StatefulWidget {
   final QuestionModel question;
-
-  const PatternBody({Key? key, required this.question}) : super(key: key);
+  final bool fromResult;
+  final ResultsModel? results;
+  const PatternBody({super.key, required this.question,this.fromResult = false,
+    this.results});
 
   @override
   State<PatternBody> createState() => _PatternBodyState();

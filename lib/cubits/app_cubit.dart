@@ -16,11 +16,10 @@ class AppCubit extends Cubit<AppState> {
   static AppCubit get(context)=>BlocProvider.of(context);
 
   PageController pageController = PageController(
-    initialPage: 1
   );
   List<AnswerModel> userAnswers = [];
 
-  var _database = FirebaseFirestore.instance;
+  final _database = FirebaseFirestore.instance;
 
 
   //Counter
@@ -61,6 +60,7 @@ class AppCubit extends Cubit<AppState> {
     print(questions.length);
     print(userAnswers.length);
     Map<String, bool> checkUserSolution = {};
+    grade = 0;
     for(var element in questions){
       checkUserSolution[element.id] = false;
     }

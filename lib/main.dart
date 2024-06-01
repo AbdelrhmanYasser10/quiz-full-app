@@ -10,6 +10,7 @@ import 'package:new_quiz_full_app/cubits/quizzes_cubit/quizzes_cubit.dart';
 import 'package:new_quiz_full_app/cubits/results_cubit/results_cubit.dart';
 import 'package:new_quiz_full_app/screens/intro_screen.dart';
 import 'package:new_quiz_full_app/screens/register_screen.dart';
+import 'package:new_quiz_full_app/utlis/audio_player_utils.dart';
 
 import 'firebase_options.dart';
 import 'generated/l10n.dart';
@@ -19,6 +20,7 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  AppAudioPlayer.initializeAudioPlayer();
   runApp(const MyApp());
 }
 
@@ -58,7 +60,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: false,
         ),
-        home: FirebaseAuth.instance.currentUser !=null ?IntroScreen():const RegisterScreen(),
+        home: FirebaseAuth.instance.currentUser !=null ?const IntroScreen():const RegisterScreen(),
       ),
     );
   }
@@ -100,3 +102,62 @@ class MyApp extends StatelessWidget {
     return Intl.getCurrentLocale() == "ar";
   }
 }*/
+
+
+// test for another example :))
+class TestScreen extends StatefulWidget {
+  const TestScreen({super.key});
+
+  @override
+  State<TestScreen> createState() => _TestScreenState();
+}
+
+class _TestScreenState extends State<TestScreen> {
+  bool value = false;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            IntrinsicHeight(
+              child: Stack(
+                children: <Widget>[
+                  Image.network('https://i.imgur.com/MUuCuYI.png'),
+                  Align(
+                    alignment: Alignment(.66 * 2 - 1 , .12 * 2 - 1),
+                    child: Image.asset(
+                      "assets/animal images/butterfly.png",
+                      width: 50,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(.536 * 2 - 1, .274 * 2 - 1),
+                    child: Text('cloud'),
+                  ),
+                ],
+              ),
+            ),
+
+            Row(
+              children: [
+                Image.asset(
+                  "assets/animal images/butterfly.png",
+                  width: 40,
+                ),
+                Checkbox(
+                  value: value,
+                  onChanged: (newVal) {
+                    setState(() {
+                      value= newVal!;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

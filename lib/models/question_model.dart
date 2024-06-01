@@ -12,8 +12,9 @@ class QuestionModel{
   int? correctAnswerIndex;
   List<List<String>>? crossWordQuestion;
   List<String>? patternImages;
-  List<String>? correctReorderedList;
   String? correctPatternKey;
+
+  List<String>? correctReorderedList;
   int? crossAxisCount;
 
   QuestionModel({
@@ -44,6 +45,7 @@ class QuestionModel{
       json['dragChecker'].keys.forEach((element) {
         dragChecker![element] = false;
       });
+
     }
     correctAnswerIndex = json['correctAnswerIndex'];
     if(type == 'crossword'){
@@ -66,6 +68,7 @@ class QuestionModel{
         patternImages!.add(element);
       }
     }
+
     correctPatternKey = json['patternCorrectKey'];
 
     crossAxisCount = json['crossAxisCount'];

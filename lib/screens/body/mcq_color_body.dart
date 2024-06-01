@@ -5,11 +5,14 @@ import '../../cubits/app_cubit.dart';
 import '../../cubits/questions_cubit/questions_cubit.dart';
 import '../../models/answer_model.dart';
 import '../../models/question_model.dart';
+import '../../models/results_model.dart';
 
 class MCQColorBody extends StatefulWidget {
   final QuestionModel question;
-
-  const MCQColorBody({super.key,required this.question});
+  final bool fromResult;
+  final ResultsModel? results;
+  const MCQColorBody({super.key,required this.question , this.fromResult = false,
+    this.results});
 
   @override
   State<MCQColorBody> createState() => _MCQColorBodyState();

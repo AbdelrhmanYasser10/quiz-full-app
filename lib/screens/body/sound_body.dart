@@ -1,4 +1,4 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_quiz_full_app/models/answer_model.dart';
@@ -23,9 +23,14 @@ class SoundBody extends StatefulWidget {
 }
 
 class _SoundBodyState extends State<SoundBody> {
-  final assetsAudioPlayer = AssetsAudioPlayer();
+  final player = AudioPlayer();
   int? activeIndex;
 
+  @override
+  void dispose() {
+    super.dispose();
+    player.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
@@ -42,11 +47,8 @@ class _SoundBodyState extends State<SoundBody> {
                   child: Column(
                     children: [
                       IconButton(
-                        onPressed: () {
-                          assetsAudioPlayer.open(
-                            Audio(widget.question.title),
-                          );
-                          assetsAudioPlayer.play();
+                        onPressed: ()async {
+                          await player.play(UrlSource(widget.question.title));
                         },
                         icon: const Icon(
                           Icons.volume_up,
@@ -120,11 +122,8 @@ class _SoundBodyState extends State<SoundBody> {
                   child: Column(
                     children: [
                       IconButton(
-                        onPressed: () {
-                          assetsAudioPlayer.open(
-                            Audio(widget.question.title),
-                          );
-                          assetsAudioPlayer.play();
+                        onPressed: ()async {
+                          await player.play(UrlSource(widget.question.title));
                         },
                         icon: const Icon(
                           Icons.volume_up,

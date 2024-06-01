@@ -58,7 +58,8 @@ class _DragBodyState extends State<DragBody> {
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
                               mainAxisSpacing: 10,
-                              crossAxisSpacing: 10),
+                              crossAxisSpacing: 10,
+                          ),
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
@@ -69,7 +70,7 @@ class _DragBodyState extends State<DragBody> {
                             return DragTarget<String>(
                               builder: (context, candidateData, rejectedData) {
                                 return Image.network(
-                                  widget.question.answers[index],
+                                  data,
                                   color: isDragged ? null : Colors.black,
                                 );
                               },
@@ -123,12 +124,11 @@ class _DragBodyState extends State<DragBody> {
                           crossAxisSpacing: 10.0,
                         ),
                         itemBuilder: (context, index) {
-                          var data = widget.question.dragChecker!.keys
-                              .elementAt(index);
+                          var data = widget.question.answers[index];
                           bool isDraggedSuccessfully = widget.question
                               .dragChecker![data]!;
                           return Draggable<String>(
-                            data: data,
+                            data: widget.question.answers[index],
                             childWhenDragging: Image.network(
                               widget.question.answers[index],
                               color: Colors.grey,

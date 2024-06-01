@@ -10,3 +10,10 @@ class RegisterError extends AuthState{
 final String message;
 RegisterError({required this.message});
 }
+
+class LogOutLoading extends AuthState{}
+class LogOutSuccessfully extends AuthState{}
+class LogOutError extends AuthState{
+  final String message;
+  LogOutError({required this.message});
+}

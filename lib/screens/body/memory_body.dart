@@ -1,17 +1,23 @@
 import 'dart:async';
 
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_quiz_full_app/cubits/app_cubit.dart';
 import 'package:new_quiz_full_app/models/question_model.dart';
+import 'package:new_quiz_full_app/screens/passed_or_not_widget.dart';
 
 import '../../cubits/questions_cubit/questions_cubit.dart';
 import '../../models/answer_model.dart';
+import '../../models/results_model.dart';
 
 class MemoryQuizBody extends StatefulWidget {
   final QuestionModel question;
-  const MemoryQuizBody({super.key ,required this.question});
+  final bool fromResult;
+  final ResultsModel? results;
+  const MemoryQuizBody({super.key ,required this.question,this.fromResult = false,
+    this.results});
 
   @override
   State<MemoryQuizBody> createState() => _MemoryQuizBodyState();
@@ -82,64 +88,69 @@ class _MemoryQuizBodyState extends State<MemoryQuizBody> {
   listener: (context, state) {
   },
   builder: (context, state) {
-    var cubit = AppCubit.get(context);
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(4),
-          child: GridView.builder(
-            itemCount: widget.question.answers.length,
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: widget.question.crossAxisCount!,
-            ),
-            itemBuilder: (context, index) {
-              if(_start){
-                return FlipCard(
+    if(!widget.fromResult) {
+      var cubit = AppCubit.get(context);
+      return Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: GridView.builder(
+              itemCount: widget.question.answers.length,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: widget.question.crossAxisCount!,
+              ),
+              itemBuilder: (context, index) {
+                if (_start) {
+                  return FlipCard(
                     key: keys[index],
                     onFlip: () {
-                      if(!_flip){
+                      if (!_flip) {
                         _flip = true;
                         previousIndex = index;
                       }
-                      else{
-                        _flip =false;
-                        if(previousIndex != index){
-                          if(widget.question.answers[previousIndex] != widget.question.answers[index]){
+                      else {
+                        _flip = false;
+                        if (previousIndex != index) {
+                          if (widget.question.answers[previousIndex] !=
+                              widget.question.answers[index]) {
                             _wait = true;
                             Future.delayed(
                               Duration(milliseconds: 1500),
-                              () {
+                                  () {
                                 keys[previousIndex].currentState!.toggleCard();
                                 previousIndex = index;
                                 keys[previousIndex].currentState!.toggleCard();
                                 Future.delayed(
                                   Duration(milliseconds: 1500),
-                                  () {
+                                      () {
                                     _wait = false;
                                   },
                                 );
                               },
                             );
                           }
-                          else{
+                          else {
                             _cardFlips[previousIndex] = false;
                             _cardFlips[index] = false;
-                            if(_cardFlips.every((element) => element == false)){
+                            if (_cardFlips.every((element) =>
+                            element == false)) {
                               Future.delayed(
                                 const Duration(milliseconds: 160),
-                                () {
+                                    () {
                                   setState(() {
-                                    _isFinished  = true;
-                                    _start =false;
+                                    _isFinished = true;
+                                    _start = false;
                                     cubit.userAddNewAnswer(
                                       userAnswer: AnswerModel(
                                         questionId: widget.question.id,
                                         passedByUser: true,
                                       ),
                                       questions:
-                                      QuestionsCubit.get(context).questions,
+                                      QuestionsCubit
+                                          .get(context)
+                                          .questions,
                                     );
                                   });
                                   // add to jump to next question
@@ -150,8 +161,8 @@ class _MemoryQuizBodyState extends State<MemoryQuizBody> {
                         }
                       }
                     },
-                  flipOnTouch: _wait ?false :_cardFlips[index],
-                  direction: FlipDirection.HORIZONTAL,
+                    flipOnTouch: _wait ? false : _cardFlips[index],
+                    direction: FlipDirection.HORIZONTAL,
                     front: Container(
                       decoration: BoxDecoration(
                         color: Colors.grey,
@@ -168,21 +179,49 @@ class _MemoryQuizBodyState extends State<MemoryQuizBody> {
                       child: Padding(
                         padding: const EdgeInsets.all(8),
                         child: Image.asset(
-                          "assets/images/quest.png"
+                            "assets/images/quest.png"
                         ),
                       ),
                     ),
                     back: getItem(index),
-                );
-              }
-              else{
-                return getItem(index);
-              }
-            },
+                  );
+                }
+                else {
+                  return getItem(index);
+                }
+              },
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
+    else{
+      return Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: Column(
+              children: [
+                Expanded(
+                  child: GridView.builder(
+                    itemCount: widget.question.answers.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: widget.question.crossAxisCount!,
+                    ),
+                    itemBuilder: (context, index) {
+                      return getItem(index);
+                    },
+                  ),
+                ),
+                PassedOrNotWidget(pass: widget.results!.pass!),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
   },
 );
   }

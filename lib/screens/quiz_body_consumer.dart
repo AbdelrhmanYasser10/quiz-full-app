@@ -51,7 +51,7 @@ class QuizBodyConsumer extends StatelessWidget {
                 isReverse: true,
                 isReverseAnimation: false,
                 isTimerTextShown: true,
-                autoStart: false,
+                autoStart: true,
                 onComplete: () {
                   cubit.timeOutFunction(
                     questions: questionCubit.questions,
