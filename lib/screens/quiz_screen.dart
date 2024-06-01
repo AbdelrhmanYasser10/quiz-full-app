@@ -34,9 +34,9 @@ class QuizScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.white, // change background color here!!
           appBar: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.white, // change background color here!!
             centerTitle: true,
             elevation: 0.0,
             title: Text(
