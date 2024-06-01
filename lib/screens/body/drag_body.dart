@@ -115,35 +115,37 @@ class _DragBodyState extends State<DragBody> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 10.0,
-                          crossAxisSpacing: 10.0,
+                      Center(
+                        child: GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 10.0,
+                            crossAxisSpacing: 10.0,
+                          ),
+                          itemBuilder: (context, index) {
+                            var data = widget.question.answers[index];
+                            bool isDraggedSuccessfully = widget.question
+                                .dragChecker![data]!;
+                            return Draggable<String>(
+                              data: widget.question.answers[index],
+                              childWhenDragging: Image.network(
+                                widget.question.answers[index],
+                                color: Colors.grey,
+                              ),
+                              feedback: Image.network(
+                                widget.question.answers[index],
+                              ),
+                              child: isDraggedSuccessfully
+                                  ? const SizedBox()
+                                  : Image.network(
+                                widget.question.answers[index],
+                              ),
+                            );
+                          },
+                          itemCount: widget.question.dragChecker!.keys.length,
                         ),
-                        itemBuilder: (context, index) {
-                          var data = widget.question.answers[index];
-                          bool isDraggedSuccessfully = widget.question
-                              .dragChecker![data]!;
-                          return Draggable<String>(
-                            data: widget.question.answers[index],
-                            childWhenDragging: Image.network(
-                              widget.question.answers[index],
-                              color: Colors.grey,
-                            ),
-                            feedback: Image.network(
-                              widget.question.answers[index],
-                            ),
-                            child: isDraggedSuccessfully
-                                ? const SizedBox()
-                                : Image.network(
-                              widget.question.answers[index],
-                            ),
-                          );
-                        },
-                        itemCount: widget.question.dragChecker!.keys.length,
                       ),
                     ],
                   ),
